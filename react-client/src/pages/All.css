@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px;
+
+}
+
+.container button {
+
+  background-color: white;
+  border: solid;
+  border-width: 3px;
+  border-color: rgb(3, 7, 89);
+  border-radius: 0.1rem;
+  border-radius: 16px;
+  box-sizing: border-box;
+  color:  rgb(3, 7, 89);
+  cursor: pointer;
+  padding: 15px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  width: 80px;
+  }
+
+  .container select {
+
+    background-color: white;
+    border: solid;
+    border-width: 3px;
+    border-color: rgb(3, 7, 89);
+    border-radius: 0.1rem;
+    border-radius: 16px;
+    box-sizing: border-box;
+    color:  rgb(3, 7, 89);
+    cursor: pointer;
+    padding: 15px 16px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    width: 200px;
+    }
