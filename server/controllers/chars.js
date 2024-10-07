@@ -71,9 +71,68 @@ const searchChars = async (req, res) => {
   }
 };
 
+const createChar = async (req, res) => {
+  try {
+    const { name, image, description, curiosity, video_game_title } = req.body;
+
+    const insertQuery = {
+      text: "INSERT INTO chars (name, image, description, curiosity, video_game_title) VALUES ($1, $2, $3, $4, $5)",
+    };
+
+    const results = await pool.query(insertQuery, [
+      name,
+      image,
+      description,
+      curiosity,
+      video_game_title,
+    ]);
+
+    res.status(201).json(results.rows[0]);
+  } catch (error) {
+    res.status(409).json({ error: error.message });
+  }
+};
+
+const updateChar = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { name, image, description, curiosity, video_game_title } = req.body;
+
+    const insertQuery = {
+      text: "UPDATE chars SET name = $1, image = $2, description = $3, curiosity = $4, video_game_title = $5 WHERE id = $6",
+    };
+
+    const results = await pool.query(insertQuery, [
+      name,
+      image,
+      description,
+      curiosity,
+      video_game_title,
+      id,
+    ]);
+
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    res.status(409).json({ error: error.message });
+  }
+};
+
+const deleteChar = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const results = await pool.query("DELETE FROM chars WHERE id = $1", [id]);
+    res.status(200).json(results.rows[0]);
+  } catch (error) {
+    res.status(409).json({ error: error.message });
+  }
+};
+
 export default {
   getChars,
   searchChars,
   getCharById,
   getCharsByTitle,
+  createChar,
+  updateChar,
+  deleteChar,
 };

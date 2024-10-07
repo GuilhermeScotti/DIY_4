@@ -13,6 +13,8 @@ const CharDetails = ({ data }) => {
     curiosity: "",
   });
 
+  // const gift = data;
+
   useEffect(() => {
     const fetchCharById = async () => {
       const response = await fetch(`/chars/${id}`);

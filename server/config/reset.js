@@ -4,6 +4,7 @@ import { charsData, titlesData } from "../data/chars.js";
 
 const createTableQuery = `
     DROP TABLE IF EXISTS chars;
+    DROP TABLE IF EXISTS video_game_titles;
 
     CREATE TABLE IF NOT EXISTS chars (
         id SERIAL PRIMARY KEY,
@@ -14,8 +15,6 @@ const createTableQuery = `
         video_game_title INTEGER NOT NULL
     );
 
-    DROP TABLE IF EXISTS video_game_titles;
-
     CREATE TABLE IF NOT EXISTS video_game_titles (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL
@@ -25,55 +24,49 @@ const createTableQuery = `
 const createCharsTable = async () => {
   try {
     const res = await pool.query(createTableQuery);
-    console.log("🎉 gifts table created successfully");
+    console.log("🎉 tables created successfully");
   } catch (error) {
     console.error("⚠️ error creating chars table", error);
   }
 };
 
 const seedCharsTable = async () => {
+  // Create the chars table first
   await createCharsTable();
 
-  charsData.forEach((char) => {
-    const insertQuery = {
-      text: "INSERT INTO chars (id, name, image, description, curiosity, video_game_title) VALUES ($1, $2, $3, $4, $5, $6)",
-    };
+  // Insert chars data
+  try {
+    for (const char of charsData.sort((a, b) => a.id - b.id)) {
+      const insertCharQuery = {
+        text: "INSERT INTO chars (name, image, description, curiosity, video_game_title) VALUES ($1, $2, $3, $4, $5)",
+      };
 
-    const values = [
-      char.id,
-      char.name,
-      char.image,
-      char.description,
-      char.curiosity,
-      char.video_game_title,
-    ];
+      const values = [
+        char.name,
+        char.image,
+        char.description,
+        char.curiosity,
+        char.video_game_title,
+      ];
 
-    pool.query(insertQuery, values, (err, res) => {
-      if (err) {
-        console.error("⚠️ error inserting char", err);
-        return;
-      }
+      await pool.query(insertCharQuery, values); // Await query execution
+      console.log(`CHAR: ✅ ${char.name} id: ${char.id} added successfully`);
+    }
 
-      console.log(`✅ ${char.name} added successfully`);
-    });
-  });
+    // Insert titles data only after chars data is inserted
+    for (const title of titlesData) {
+      const insertTitleQuery = {
+        text: "INSERT INTO video_game_titles (id, name) VALUES ($1, $2)",
+      };
 
-  titlesData.forEach((title) => {
-    const insertQuery = {
-      text: "INSERT INTO video_game_titles (id, name) VALUES ($1, $2)",
-    };
+      const values = [title.id, title.name];
 
-    const values = [title.id, title.name];
-
-    pool.query(insertQuery, values, (err, res) => {
-      if (err) {
-        console.error("⚠️ error inserting title", err);
-        return;
-      }
-
-      console.log(`✅ ${title.name} added successfully`);
-    });
-  });
+      await pool.query(insertTitleQuery, values); // Await query execution
+      console.log(`GAME: ✅ ${title.name} added successfully`);
+    }
+  } catch (error) {
+    console.error("⚠️ error seeding tables", error);
+  }
 };
 
 seedCharsTable();

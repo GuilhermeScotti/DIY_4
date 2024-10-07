@@ -5,8 +5,9 @@ import cors from "cors";
 
 const app = express();
 
-app.use("/chars", router);
 app.use(cors());
+app.use(express.json());
+app.use("/chars", router);
 
 app.get("/", (req, res) => {
   res
