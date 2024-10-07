@@ -96,10 +96,10 @@ const createChar = async (req, res) => {
 const updateChar = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { name, image, description, curiosity, video_game_title } = req.body;
+    const { name, image, description, curiosity } = req.body;
 
     const insertQuery = {
-      text: "UPDATE chars SET name = $1, image = $2, description = $3, curiosity = $4, video_game_title = $5 WHERE id = $6",
+      text: "UPDATE chars SET name = $1, image = $2, description = $3, curiosity = $4 WHERE id = $5",
     };
 
     const results = await pool.query(insertQuery, [
@@ -107,7 +107,6 @@ const updateChar = async (req, res) => {
       image,
       description,
       curiosity,
-      video_game_title,
       id,
     ]);
 

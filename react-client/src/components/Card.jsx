@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Card.css";
+import more from "./more.png";
 
 const Card = (props) => {
   const [char, setChar] = useState({
@@ -24,7 +25,12 @@ const Card = (props) => {
   return (
     <div className="card">
       <div>
-        <img src={char.image} alt={char.name} className="top-image" />
+        <Link to={"/edit/" + char.id}>
+          <img className="more-img" src={more} />
+        </Link>
+      </div>
+      <div>
+        <img src={char.image} alt={char.name} className="game-img top-image" />
       </div>
       <div className="bottom-container">
         <h3>{char.name}</h3>

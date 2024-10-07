@@ -7,6 +7,8 @@ import Titles from "./pages/Titles";
 import CharDetails from "./pages/CharDetails";
 import PageNotFound from "./pages/PageNotFound";
 import { Link } from "react-router-dom";
+import CreateChar from "./pages/CreateChar";
+import EditChar from "./pages/EditChar";
 
 function App() {
   const [chars, setChars] = useState([]);
@@ -43,6 +45,14 @@ function App() {
       path: "/*",
       element: <PageNotFound />,
     },
+    {
+      path: "/new",
+      element: <CreateChar />,
+    },
+    {
+      path: "/edit/:id",
+      element: <EditChar data={chars} />,
+    },
   ]);
 
   return (
@@ -59,6 +69,9 @@ function App() {
             </Link>
             <Link to="/all">
               <button className="homeBtn">All</button>
+            </Link>
+            <Link to="/new">
+              <button className="homeBtn">Add +</button>
             </Link>
           </div>
         </div>
